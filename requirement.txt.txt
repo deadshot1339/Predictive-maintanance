@@ -1,0 +1,7 @@
+Pyhton
+NumPy
+Pandas
+Streamlit
+Matplotlib
+Sciket-learn
+Joblib
