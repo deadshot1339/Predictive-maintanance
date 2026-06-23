@@ -68,23 +68,23 @@ with tab1:
 
         if rot_speed>2886 or rot_speed<1168:
             out_of_range=True
-            st.warning("Data is out of range")
+            st.warning("Rotational speed is out of range")
 
         if torque>76.6 or torque<3.8:
             out_of_range=True
-            st.warning("Data is out of range")
+            st.warning("Torque is out of range")
         
         if tool_wear>253:
             out_of_range=True
-            st.warning("Data is out of range")
+            st.warning("Tool wear is out of range")
         
         if process_temp>314 or process_temp<305:
             out_of_range=True
-            st.warning("Data is out of range")
+            st.warning("Process temprature is out of range")
 
         if air_temp>305 or air_temp<295:
             out_of_range=True
-            st.warning("Data is out of range")
+            st.warning("Air temprature is out of range")
 
         if out_of_range:
             st.warning("Data is out of range so the prediction is based on extrapolation of model")
