@@ -11,9 +11,10 @@ columns = joblib.load("columns.pkl")
 st.title("🔧 Predictive Maintenance Dashboard")
 
 # Tabs
-tab1, tab2 = st.tabs([
+tab1, tab2 ,tab3= st.tabs([
     "Prediction",
-    "Feature Importance"
+    "Feature Importance",
+    "Dataset Statistics"
 ])
 
 
@@ -63,11 +64,34 @@ with tab1:
             "Tool wear [min]": [tool_wear],
             "Type": [machine_type]
         })
+        out_of_range=False
 
-        # One-hot encoding
+        if rot_speed>2886 or rot_speed<1168:
+            out_of_range=True
+            st.warning("Data is out of range")
+
+        if torque>76.6 or torque<3.8:
+            out_of_range=True
+            st.warning("Data is out of range")
+        
+        if tool_wear>253:
+            out_of_range=True
+            st.warning("Data is out of range")
+        
+        if process_temp>314 or process_temp<305:
+            out_of_range=True
+            st.warning("Data is out of range")
+
+        if air_temp>305 or air_temp<295:
+            out_of_range=True
+            st.warning("Data is out of range")
+
+        if out_of_range:
+            st.warning("Data is out of range so the prediction is based on extrapolation of model")
+            
+
         data = pd.get_dummies(data)
 
-        # Match training columns
         data = data.reindex(
             columns=columns,
             fill_value=0
@@ -123,3 +147,61 @@ with tab2:
     ax.set_xlabel("Importance Score")
 
     st.pyplot(fig)
+
+# Dataset Statistics
+with tab3:
+    df = pd.read_csv("ai4i2020.csv.csv")
+
+    st.header("Dataset Statistics")
+
+    total_samples = len(df)
+
+    total_failures = df["Machine failure"].sum()
+
+    healthy_samples = total_samples - total_failures
+
+    failure_percentage = (
+        total_failures / total_samples
+    ) * 100
+
+    healthy_percentage = (
+        healthy_samples / total_samples
+    ) * 100
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.metric(
+            "Total Samples",
+            total_samples
+        )
+
+        st.metric(
+            "Total Failures",
+            int(total_failures)
+        )
+
+    with col2:
+        st.metric(
+            "Healthy Samples",
+            int(healthy_samples)
+        )
+
+        st.metric(
+            "Failure %",
+            f"{failure_percentage:.2f}%"
+        )
+
+    st.subheader("Failure Distribution")
+
+    chart_df = pd.DataFrame({
+        "Category": ["Healthy", "Failure"],
+        "Count": [
+            healthy_samples,
+            total_failures
+        ]
+    })
+
+    st.bar_chart(
+        chart_df.set_index("Category")
+    )
