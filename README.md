@@ -119,6 +119,14 @@ streamlit run app.py
 
 ---
 
+## Dashboard
+
+![Dashboard](screenshots/Dashboard.png)
+
+## Feature Importance
+
+![Feature Importance](screenshots/Feature_importance.png)
+
 ## Author
 
 Deepanshu
