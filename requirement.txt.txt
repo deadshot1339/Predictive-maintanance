@@ -4,4 +4,4 @@ Pandas
 Streamlit
 Matplotlib
 Sciket-learn
-Joblib
+joblib
